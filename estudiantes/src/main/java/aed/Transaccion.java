@@ -18,7 +18,7 @@ public class Transaccion implements Comparable<Transaccion> {
         if (this.monto != otro.monto) {
             return this.monto - otro.monto; 
         } else {
-            return this.id - otro.id; 
+            return otro.id - this.id; 
         }
     }
 
