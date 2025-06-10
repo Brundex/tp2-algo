@@ -83,6 +83,10 @@ public class MaxHeap<T extends Comparable<T>> {
         return listaHandles.get(0).valor;
     }
 
+    public int longitud() {
+        return listaHandles.size();
+    }
+
     public void agregar(T elem) {
         Handle nuevoHandle = new Handle(listaHandles.size(), elem);
         listaHandles.add(nuevoHandle);
@@ -117,12 +121,12 @@ public class MaxHeap<T extends Comparable<T>> {
 
         // Intercambiar el máximo con el último elemento
         Handle ultimo = listaHandles.get(listaHandles.size() - 1);
-        T aux = maximo();
-        listaHandles.get(0).valor = ultimo.valor;
-        ultimo.valor = aux;
+        listaHandles.set(0, ultimo);
 
         // Eliminar el último elemento tiene complejidad O(1)
         listaHandles.remove(listaHandles.size() - 1);
+
+        heapifyDown(ultimo);
     }
 
     public void conjuntoACola(T[] conj) {
