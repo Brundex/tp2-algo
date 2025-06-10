@@ -16,22 +16,24 @@ public class Transaccion implements Comparable<Transaccion> {
     @Override
     public int compareTo(Transaccion otro) {
         if (this.monto != otro.monto) {
-            return this.monto - otro.monto; 
+            return this.monto - otro.monto;
         } else {
-            return otro.id - this.id; 
+            return this.id - otro.id;
         }
     }
 
     @Override
     public boolean equals(Object otro) {
-        if (this == otro) return true; 
-        if (otro == null || getClass() != otro.getClass()) return false; 
-        Transaccion otraTx = (Transaccion) otro; 
+        if (this == otro)
+            return true;
+        if (otro == null || this.getClass() != otro.getClass())
+            return false;
+        Transaccion otraTx = (Transaccion) otro;
         return this.id == otraTx.id &&
-            this.id_comprador == otraTx.id_comprador &&
-            this.id_vendedor == otraTx.id_vendedor &&
-            this.monto == otraTx.monto;
-    }  
+                this.id_comprador == otraTx.id_comprador &&
+                this.id_vendedor == otraTx.id_vendedor &&
+                this.monto == otraTx.monto;
+    }
 
     public int monto() {
         return monto;
@@ -40,8 +42,12 @@ public class Transaccion implements Comparable<Transaccion> {
     public int id_comprador() {
         return id_comprador;
     }
-    
+
     public int id_vendedor() {
         return id_vendedor;
+    }
+
+    public int id() {
+        return id;
     }
 }

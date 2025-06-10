@@ -1,4 +1,4 @@
-package aed;
+package aed.utils.estructuras;
 
 import java.util.*;
 
@@ -12,10 +12,10 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         Nodo sig;
         Nodo ant;
 
-        Nodo (T v) {
+        Nodo(T v) {
             valor = v;
         }
-    }   
+    }
 
     public ListaEnlazada() {
         this.primero = null;
@@ -23,7 +23,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         this.longitud = 0;
     }
 
-    public int longitud() {        
+    public int longitud() {
         return this.longitud;
     }
 
@@ -32,11 +32,10 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         if (primero == null) {
             primero = nuevo;
             ultimo = nuevo;
-        }
-        else {
-        nuevo.sig = primero;
-        nuevo.ant = null;
-        primero = nuevo;
+        } else {
+            nuevo.sig = primero;
+            nuevo.ant = null;
+            primero = nuevo;
         }
         longitud++;
     }
@@ -46,8 +45,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         if (primero == null) {
             primero = nuevo;
             ultimo = nuevo;
-        }
-        else {
+        } else {
             nuevo.ant = ultimo;
             nuevo.sig = null;
             ultimo.sig = nuevo;
@@ -72,8 +70,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         if (this.longitud() == 1) {
             primero = null;
             ultimo = null;
-        }
-        else {
+        } else {
             // Primer elemento pero no único
             if (i == 0) {
                 actual.sig.ant = null;
@@ -85,8 +82,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
                     actual = actual.sig;
                 }
                 actual.ant.sig = null;
-            }
-            else {
+            } else {
                 for (int j = 0; j < i; j++) {
                     actual.sig.ant = actual;
                     actual = actual.sig;
@@ -116,7 +112,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         }
         this.longitud = lista.longitud();
     }
-    
+
     @Override
     public String toString() {
         String texto = "[";

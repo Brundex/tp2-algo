@@ -1,8 +1,12 @@
 package aed;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
+
+import aed.utils.estructuras.*;
 
 class ListaEnlazadaTests {
 
@@ -107,13 +111,12 @@ class ListaEnlazadaTests {
 
         lista.eliminar(0);
         lista.eliminar(0);
-        
 
         assertEquals(0, lista.longitud());
     }
 
     @Test
-    void eliminarExtremos(){
+    void eliminarExtremos() {
         ListaEnlazada<Integer> lista = new ListaEnlazada<>();
 
         lista.agregarAdelante(43);
@@ -219,7 +222,7 @@ class ListaEnlazadaTests {
     }
 
     @Test
-    void imprimirLista(){
+    void imprimirLista() {
         ListaEnlazada<Integer> lista = new ListaEnlazada<>();
 
         lista.agregarAtras(42);
@@ -233,7 +236,7 @@ class ListaEnlazadaTests {
     }
 
     @Test
-    void imprimirLuegoDeEliminar(){
+    void imprimirLuegoDeEliminar() {
         ListaEnlazada<Integer> lista = new ListaEnlazada<>();
 
         lista.agregarAtras(42);
@@ -280,7 +283,7 @@ class ListaEnlazadaTests {
     }
 
     @Test
-    void iteradorEsBidireccional(){
+    void iteradorEsBidireccional() {
         ListaEnlazada<Integer> lista = new ListaEnlazada<>();
 
         lista.agregarAtras(42);
