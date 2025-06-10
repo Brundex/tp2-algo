@@ -1,4 +1,4 @@
-package aed;
+package aed.utils.estructuras;
 
 interface Secuencia<T> {
 

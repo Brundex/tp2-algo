@@ -1,13 +1,13 @@
-package aed;
+package aed.utils.estructuras;
 
-interface Iterador<T> {
-    
+public interface Iterador<T> {
+
     /**
      * Devuelve true si hay un elemento siguiente en la colección.
      * 
      */
     public boolean haySiguiente();
-    
+
     /**
      * Devuelve true si hay un elemento anterior en la colección.
      * 
