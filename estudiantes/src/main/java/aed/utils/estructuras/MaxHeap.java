@@ -15,6 +15,26 @@ public class MaxHeap<T extends Comparable<T>> {
         }
     }
 
+    public MaxHeap() {
+        listaHandles = new ArrayList<Handle>();
+    }
+
+    public MaxHeap(T[] elems) {
+        listaHandles = new ArrayList<Handle>();
+
+        // Primero agregamos todos los elementos
+        for (int i = 0; i < elems.length; i++) {
+            T elem = elems[i];
+            Handle elemHandle = new Handle(i, elem);
+            listaHandles.add(elemHandle);
+        }
+
+        // Heapify desde la mitad hacia arriba
+        for (int i = elems.length / 2 - 1; i >= 0; i--) {
+            heapifyDown(listaHandles.get(i));
+        }
+    }
+
     // Para debugear
     public String print() {
         String sListaHandles = "";
@@ -56,26 +76,6 @@ public class MaxHeap<T extends Comparable<T>> {
 
             // Continuar heapify en el subárbol afectado
             heapifyDown(mayor);
-        }
-    }
-
-    public MaxHeap() {
-        listaHandles = new ArrayList<Handle>();
-    }
-
-    public MaxHeap(T[] elems) {
-        listaHandles = new ArrayList<Handle>();
-
-        // Primero agregamos todos los elementos
-        for (int i = 0; i < elems.length; i++) {
-            T elem = elems[i];
-            Handle elemHandle = new Handle(i, elem);
-            listaHandles.add(elemHandle);
-        }
-
-        // Heapify desde la mitad hacia arriba
-        for (int i = elems.length / 2 - 1; i >= 0; i--) {
-            heapifyDown(listaHandles.get(i));
         }
     }
 
@@ -133,6 +133,16 @@ public class MaxHeap<T extends Comparable<T>> {
     }
 
     public void conjuntoACola(T[] conj) {
+        // Limpiar el heap actual
+        listaHandles.clear();
+
+        // Construir nuevo heap con los elementos del conjunto
+        for (T elem : conj) {
+            agregar(elem);
+        }
+    }
+
+    public void conjuntoACola(ArrayList<T> conj) {
         // Limpiar el heap actual
         listaHandles.clear();
 
