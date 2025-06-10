@@ -80,6 +80,8 @@ public class MaxHeap<T extends Comparable<T>> {
     }
 
     public T maximo() {
+        if (listaHandles.size() == 0)
+            return null;
         return listaHandles.get(0).valor;
     }
 
@@ -121,6 +123,7 @@ public class MaxHeap<T extends Comparable<T>> {
 
         // Intercambiar el máximo con el último elemento
         Handle ultimo = listaHandles.get(listaHandles.size() - 1);
+        ultimo.indice = 0;
         listaHandles.set(0, ultimo);
 
         // Eliminar el último elemento tiene complejidad O(1)

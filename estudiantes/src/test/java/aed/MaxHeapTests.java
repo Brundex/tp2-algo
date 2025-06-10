@@ -13,7 +13,6 @@ class MaxHeapTests {
   public void obtMaxElemsDesordenados() {
     MaxHeap<Integer> h = new MaxHeap<Integer>();
     h.conjuntoACola(new Integer[] { 123, 1, 999, 888, 5, 2, 3 });
-    // assertEquals("h", h.print());
     assertEquals(999, h.maximo());
   }
 
@@ -29,7 +28,7 @@ class MaxHeapTests {
     MaxHeap<Transaccion> h = new MaxHeap<Transaccion>();
     h.conjuntoACola(transacciones.toArray(new Transaccion[0]));
 
-    assertTrue(max.equals(new Transaccion(3, 1, 3, 1)));
+    assertTrue(h.maximo().equals(max));
   }
 
   @Test
@@ -49,7 +48,7 @@ class MaxHeapTests {
     h.sacarMaximo();
 
     assertEquals(3, h.longitud());
-    assertFalse(max.equals(h.maximo()));
+    assertTrue(new Transaccion(2, 3, 2, 1).equals(h.maximo()));
 
     h.sacarMaximo();
     assertTrue(new Transaccion(1, 2, 1, 1).equals(h.maximo()));

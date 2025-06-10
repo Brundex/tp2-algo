@@ -18,7 +18,7 @@ public class Transaccion implements Comparable<Transaccion> {
         if (this.monto != otro.monto) {
             return this.monto - otro.monto;
         } else {
-            return otro.id - this.id;
+            return this.id - otro.id;
         }
     }
 
@@ -26,7 +26,7 @@ public class Transaccion implements Comparable<Transaccion> {
     public boolean equals(Object otro) {
         if (this == otro)
             return true;
-        if (otro == null || getClass() != otro.getClass())
+        if (otro == null || this.getClass() != otro.getClass())
             return false;
         Transaccion otraTx = (Transaccion) otro;
         return this.id == otraTx.id &&
