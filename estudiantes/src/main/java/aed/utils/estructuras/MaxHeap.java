@@ -25,15 +25,28 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
         }
     }
 
-    // Métodos de la interfaz
+    public MaxHeap(ArrayList<T> elems) {
+        // Primero agregamos todos los elementos
+        for (int i = 0; i < elems.size(); i++) {
+            T elem = elems.get(i);
+            heap.add(elem);
+        }
+
+        // Heapify desde la mitad hacia arriba
+        for (int i = (elems.size() / 2) - 1; i >= 0; i--) {
+            heapifyDown(i);
+        }
+    }
 
     // O(1)
+    @Override
     public T maximo() { 
         if (heap.isEmpty()) return null;
-        return heap.get(0); // 
+        return heap.get(0);
     }
 
     // O(log n)
+    @Override
     public void agregar(T elem) {
         heap.add(elem);
 
@@ -42,6 +55,7 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
     }
 
     // O(log n)
+    @Override
     public void sacarMaximo() {
         if (heap.isEmpty()) {
             return;
@@ -51,14 +65,16 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
         T ultimo = heap.get(heap.size() - 1);
         heap.set(0, ultimo);
         heap.remove(heap.size() - 1); // Eliminar el último elemento tiene complejidad O(1)
-
+      
         heapifyDown(0);
     }
 
+    // O(1)
+    @Override
     public int longitud() {
         return heap.size();
     }
-    
+
     // Métodos auxiliares
     private void heapifyDown(int i) {
         int indice = i;

@@ -3,10 +3,11 @@ package aed;
 import aed.utils.estructuras.Iterador;
 import aed.utils.estructuras.ListaEnlazada;
 import aed.utils.estructuras.MaxHeap;
+import aed.utils.estructuras.ListaEnlazada.Nodo;
 
 public class Bloque {
   private ListaEnlazada<Transaccion> transaccionesLE;
-  private MaxHeap<Transaccion> transaccionesHeap;
+  private MaxHeap<ListaEnlazada<Transaccion>.Handle> transaccionesHeap;
   private int cantidadTransacciones = 0;
   private int sumaTransacciones = 0;
 
@@ -20,11 +21,12 @@ public class Bloque {
       sumaTransacciones += tx.monto();
     }
     cantidadTransacciones = transacciones.length;
-    transaccionesHeap = new MaxHeap<Transaccion>(txArray);
+    transaccionesHeap = new MaxHeap<ListaEnlazada<Transaccion>.Handle>(transaccionesLE.obtenerHandles());
   }
 
   public Transaccion txMayorValor() {
-    return transaccionesHeap.maximo();
+    ListaEnlazada<Transaccion>.Handle handleTransaccion = transaccionesHeap.maximo();
+    return handleTransaccion.nodo.valor;
   }
 
   public Transaccion[] transacciones() {
@@ -44,9 +46,12 @@ public class Bloque {
 
   // O(log n)
   public void extraerMayorTransaccion() {
-    Transaccion mayor = transaccionesHeap.maximo();
-    // Borrar transacciones del bloque
-
-    // Ajustar monto de los usuarios
+    ListaEnlazada<Transaccion>.Handle mayor = transaccionesHeap.maximo();
+    Nodo mayorEnLE = mayor.nodo;
+    if (mayorEnLE.ant != null)
+      mayorEnLE.ant.sig = mayorEnLE.sig;
+    if (mayorEnLE.sig != null)
+      mayorEnLE.sig.ant = mayorEnLE.ant;
+    transaccionesHeap.sacarMaximo();
   }
 }
