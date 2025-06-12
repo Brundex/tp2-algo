@@ -197,31 +197,6 @@ class ListaEnlazadaTests {
     }
 
     @Test
-    void listaDeElemComplejo() {
-        class Punto2D {
-            public Punto2D(int a, int b) {
-                x = a;
-                y = b;
-            }
-
-            public int x;
-            public int y;
-        }
-
-        ListaEnlazada<Punto2D> lista = new ListaEnlazada<>();
-        Punto2D p = new Punto2D(0, 1);
-        lista.agregarAdelante(p);
-        lista.agregarAtras(new Punto2D(4, 2));
-
-        assertEquals(2, lista.longitud());
-        assertEquals(0, lista.obtener(0).x);
-        assertEquals(1, lista.obtener(0).y);
-        assertEquals(4, lista.obtener(1).x);
-        assertEquals(2, lista.obtener(1).y);
-
-    }
-
-    @Test
     void imprimirLista() {
         ListaEnlazada<Integer> lista = new ListaEnlazada<>();
 

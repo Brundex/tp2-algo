@@ -2,13 +2,13 @@ package aed.utils.estructuras;
 
 import java.util.*;
 
-public class ListaEnlazada<T> implements Secuencia<T> {
+public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
     private Nodo primero;
     private Nodo ultimo;
     private ArrayList<Handle> handles;
     private int longitud;
 
-    private class Nodo {
+    public class Nodo {
         public T valor;
         public Nodo sig;
         public Nodo ant;
@@ -18,24 +18,45 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         }
     }
 
-    private class Handle {
+    public class Handle implements Comparable<Handle> {
         public Nodo nodo;
+
+        @Override
+        public int compareTo(Handle otro) {
+            return nodo.valor.compareTo(otro.nodo.valor);
+        }
+    }
+
+    // Constructores
+    public ListaEnlazada() {
+        primero = null;
+        ultimo = null;
+        longitud = 0;
+    }
+
+    public ListaEnlazada(ListaEnlazada<T> lista) {
+        Nodo actual = lista.primero;
+        primero = new Nodo(actual.valor);
+        ultimo = primero;
+        for (int i = 0; i < lista.longitud() - 1; i++) {
+            agregarAtras(actual.sig.valor);
+            actual = actual.sig;
+        }
+        longitud = lista.longitud();
     }
 
     public ArrayList<Handle> handles() {
         return handles;
     }
 
-    public ListaEnlazada() {
-        this.primero = null;
-        this.ultimo = null;
-        this.longitud = 0;
-    }
-
+    // O(1)
+    @Override
     public int longitud() {
-        return this.longitud;
+        return longitud;
     }
 
+    // O(1)
+    @Override
     public void agregarAdelante(T elem) {
         Nodo nuevo = new Nodo(elem);
         if (primero == null) {
@@ -49,6 +70,8 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         longitud++;
     }
 
+    // O(1)
+    @Override
     public void agregarAtras(T elem) {
         Nodo nuevo = new Nodo(elem);
         if (primero == null) {
@@ -63,6 +86,8 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         longitud++;
     }
 
+    // O(n)
+    @Override
     public T obtener(int i) {
         Nodo actual = primero;
         if (i == 0) {
@@ -74,9 +99,11 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         return actual.valor;
     }
 
+    // O(n)
+    @Override
     public void eliminar(int i) {
         Nodo actual = primero;
-        if (this.longitud() == 1) {
+        if (longitud() == 1) {
             primero = null;
             ultimo = null;
         } else {
@@ -86,7 +113,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
                 primero = actual.sig;
             }
             // i es el último elemento
-            else if (i == this.longitud() - 1) {
+            else if (i == longitud() - 1) {
                 for (int j = 0; j < i; j++) {
                     actual = actual.sig;
                 }
@@ -103,6 +130,8 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         longitud--;
     }
 
+    // O(n)
+    @Override
     public void modificarPosicion(int indice, T elem) {
         Nodo actual = primero;
         for (int i = 0; i < indice; i++) {
@@ -111,33 +140,27 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         actual.valor = elem;
     }
 
-    public ListaEnlazada(ListaEnlazada<T> lista) {
-        Nodo actual = lista.primero;
-        this.primero = new Nodo(actual.valor);
-        this.ultimo = primero;
-        for (int i = 0; i < lista.longitud() - 1; i++) {
-            this.agregarAtras(actual.sig.valor);
-            actual = actual.sig;
-        }
-        this.longitud = lista.longitud();
-    }
-
     @Override
     public String toString() {
         String texto = "[";
         Nodo actual = primero;
         for (int i = 0; i < longitud(); i++) {
             if (actual != ultimo) {
-                texto = texto.concat(String.format("%s, ", this.obtener(i)));
+                texto = texto.concat(String.format("%s, ", obtener(i)));
                 actual = actual.sig;
             }
             // El último elemento no lleva coma
             else if (actual == ultimo) {
-                texto = texto.concat(String.format("%s", this.obtener(i)));
+                texto = texto.concat(String.format("%s", obtener(i)));
             }
         }
         texto = texto.concat("]");
         return texto;
+    }
+
+    // O(1)
+    public ArrayList<Handle> obtenerHandles() {
+        return handles;
     }
 
     private class ListaIterador implements Iterador<T> {

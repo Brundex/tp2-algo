@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
     private ArrayList<Handle> listaHandles;
 
-    private class Handle {
+    public class Handle {
         public int indice;
         public T valor;
 
@@ -36,16 +36,32 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
         }
     }
 
-    // Métodos de la interfaz
+    public MaxHeap(ArrayList<T> elems) {
+        listaHandles = new ArrayList<Handle>();
+
+        // Primero agregamos todos los elementos
+        for (int i = 0; i < elems.size(); i++) {
+            T elem = elems.get(i);
+            Handle elemHandle = new Handle(i, elem);
+            listaHandles.add(elemHandle);
+        }
+
+        // Heapify desde la mitad hacia arriba
+        for (int i = (elems.size() / 2) - 1; i >= 0; i--) {
+            heapifyDown(i);
+        }
+    }
 
     // O(1)
-    public T maximo() { 
+    @Override
+    public T maximo() {
         if (listaHandles.isEmpty())
             return null;
-        return listaHandles.get(0).valor; // 
+        return listaHandles.get(0).valor;
     }
 
     // O(log n)
+    @Override
     public void agregar(T elem) {
         Handle nuevoHandle = new Handle(listaHandles.size(), elem);
         listaHandles.add(nuevoHandle);
@@ -55,6 +71,7 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
     }
 
     // O(log n)
+    @Override
     public void sacarMaximo() {
         if (listaHandles.isEmpty()) {
             return;
@@ -63,15 +80,18 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
         // Intercambiar el máximo con el último elemento
         Handle ultimo = listaHandles.get(listaHandles.size() - 1);
         listaHandles.set(0, ultimo);
-        listaHandles.remove(listaHandles.size() - 1); // Eliminar el último elemento tiene complejidad O(1)
+        // Eliminar el último elemento tiene complejidad O(1)
+        listaHandles.remove(listaHandles.size() - 1);
 
         heapifyDown(0);
     }
 
+    // O(1)
+    @Override
     public int longitud() {
         return listaHandles.size();
     }
-    
+
     // Métodos auxiliares
     private void heapifyDown(int i) {
         int indice = i;
@@ -80,14 +100,16 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
         int hijoDer = obtenerDer(i);
 
         // Chequea si alguno de los hijos es mayor
-        if (hijoIzq < listaHandles.size() && listaHandles.get(hijoIzq).valor.compareTo(listaHandles.get(maxIndice).valor) > 0) {
-                maxIndice = obtenerIzq(indice);
-            }
+        if (hijoIzq < listaHandles.size() &&
+                listaHandles.get(hijoIzq).valor.compareTo(listaHandles.get(maxIndice).valor) > 0) {
+            maxIndice = obtenerIzq(indice);
+        }
 
-        if (hijoDer < listaHandles.size() && listaHandles.get(hijoDer).valor.compareTo(listaHandles.get(maxIndice).valor) > 0) {
-                maxIndice = obtenerDer(indice);
-            }
-        
+        if (hijoDer < listaHandles.size() &&
+                listaHandles.get(hijoDer).valor.compareTo(listaHandles.get(maxIndice).valor) > 0) {
+            maxIndice = obtenerDer(indice);
+        }
+
         // Reemplaza por hijo mayor
         if (maxIndice != indice) {
             Handle temp = listaHandles.get(indice);
@@ -110,7 +132,6 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
                 break;
             }
 
-            // Intercambiar elementos
             T temp = actual.valor;
             actual.valor = padre.valor;
             padre.valor = temp;
@@ -129,15 +150,5 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
 
     private int obtenerPadre(int i) {
         return (i - 1) / 2;
-    }
-
-    public void conjuntoACola(ArrayList<T> conj) {
-        // Limpiar el heap actual
-        listaHandles.clear();
-
-        // Construir nuevo heap con los elementos del conjunto
-        for (T elem : conj) {
-            agregar(elem);
-        }
     }
 }
