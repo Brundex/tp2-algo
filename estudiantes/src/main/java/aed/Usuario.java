@@ -12,9 +12,9 @@ public class Usuario implements Comparable<Usuario> {
     @Override
     public int compareTo(Usuario otro) {
         if (this.monto != otro.monto) {
-            return otro.monto - this.monto; 
+            return this.monto - otro.monto; 
         } else {
-            return this.id - otro.id; 
+            return otro.id - this.id; 
         }
     }
 
@@ -33,5 +33,9 @@ public class Usuario implements Comparable<Usuario> {
 
     public int id() {
         return id;
+    }
+
+    public void actualizarSaldo(int x) {
+        monto += x;
     }
 }
