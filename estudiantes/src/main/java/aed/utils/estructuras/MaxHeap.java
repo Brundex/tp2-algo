@@ -26,6 +26,7 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
     }
 
     public MaxHeap(ArrayList<T> elems) {
+        heap = new ArrayList<T>();
         // Primero agregamos todos los elementos
         for (int i = 0; i < elems.size(); i++) {
             T elem = elems.get(i);
