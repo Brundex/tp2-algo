@@ -61,6 +61,37 @@ class MaxHeapTests {
   }
 
   @Test
+  public void borrarVariasVecesMontoDistinto() {
+    ArrayList<Transaccion> transacciones = new ArrayList<Transaccion>();
+    transacciones.add(new Transaccion(0, 1, 0, 1));
+    transacciones.add(new Transaccion(1, 2, 1, 100));
+    transacciones.add(new Transaccion(2, 3, 2, 3));
+    Transaccion max = new Transaccion(3, 1, 3, 1);
+    transacciones.add(max);
+
+    MaxHeap<Transaccion> h = new MaxHeap<Transaccion>(transacciones.toArray(new Transaccion[0]));
+
+    assertEquals(4, h.longitud());
+
+    h.sacarMaximo();
+
+    assertEquals(3, h.longitud());
+    assertTrue(new Transaccion(2, 3, 2, 3).equals(h.maximo()));
+
+    h.sacarMaximo();
+    assertTrue(new Transaccion(3, 1, 3, 1).equals(h.maximo()));
+    assertEquals(2, h.longitud());
+
+    h.sacarMaximo();
+    assertTrue(new Transaccion(0, 1, 0, 1).equals(h.maximo()));
+    assertEquals(1, h.longitud());
+
+    h.sacarMaximo();
+    assertEquals(null, h.maximo());
+    assertEquals(0, h.longitud());
+  }
+
+  @Test
   public void obtMaxHeapVacio() {
     MaxHeap<Transaccion> h = new MaxHeap<>();
     assertEquals(null, h.maximo());
