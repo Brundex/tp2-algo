@@ -14,7 +14,7 @@ public class Usuario implements Comparable<Usuario> {
         if (this.monto != otro.monto) {
             return this.monto - otro.monto; 
         } else {
-            return otro.id - this.id; 
+            return otro.id - this.id;
         }
     }
 

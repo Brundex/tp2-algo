@@ -18,7 +18,6 @@ interface Secuencia<T> {
      * Agrega un elemento al final de la secuencia.
      * 
      */
-    public void agregarAtras(T elem);
 
     /**
      * Retorna el elemento en la i-esima posicion.

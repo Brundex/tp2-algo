@@ -1,9 +1,10 @@
 package aed;
 
+import java.util.ArrayList;
+
 import aed.utils.estructuras.Iterador;
 import aed.utils.estructuras.ListaEnlazada;
 import aed.utils.estructuras.MaxHeap;
-import aed.utils.estructuras.ListaEnlazada.Nodo;
 
 public class Bloque {
   private ListaEnlazada<Transaccion> transaccionesLE;
@@ -13,20 +14,26 @@ public class Bloque {
 
   public Bloque(Transaccion[] transacciones) {
     // Implementar
-    Transaccion[] txArray = new Transaccion[transacciones.length];
+    transaccionesLE = new ListaEnlazada<>(); // Faltaba inicializar LE
+    cantidadTransacciones = transacciones.length - 1; // -1 porque no considera la transacción de creación. 
+
+    ArrayList<ListaEnlazada<Transaccion>.Handle> handles = new ArrayList<>();
+
     for (int i = 0; i < transacciones.length; i++) {
       Transaccion tx = new Transaccion(transacciones[i]);
-      transaccionesLE.agregarAtras(tx);
-      txArray[i] = tx;
-      sumaTransacciones += tx.monto();
+      ListaEnlazada<Transaccion>.Handle h = transaccionesLE.agregarAtras(tx);
+      handles.add(h);
+      if (transacciones[i].id_comprador() != 0) {
+        sumaTransacciones += tx.monto();
+      }
     }
-    cantidadTransacciones = transacciones.length;
-    transaccionesHeap = new MaxHeap<ListaEnlazada<Transaccion>.Handle>(transaccionesLE.obtenerHandles());
+    
+    transaccionesHeap = new MaxHeap<>(handles);
   }
 
   public Transaccion txMayorValor() {
     ListaEnlazada<Transaccion>.Handle handleTransaccion = transaccionesHeap.maximo();
-    return handleTransaccion.nodo.valor;
+    return handleTransaccion.obtener().valor;
   }
 
   public Transaccion[] transacciones() {
@@ -41,17 +48,16 @@ public class Bloque {
   }
 
   public int montoMedio() {
+    if (cantidadTransacciones <= 1) return 0;
     return sumaTransacciones / cantidadTransacciones;
   }
 
   // O(log n)
-  public void extraerMayorTransaccion() {
+  public Transaccion extraerMayorTransaccion() { //Que devuelva la transacción para revertir los saldos en Berretacoin
     ListaEnlazada<Transaccion>.Handle mayor = transaccionesHeap.maximo();
-    Nodo mayorEnLE = mayor.nodo;
-    if (mayorEnLE.ant != null)
-      mayorEnLE.ant.sig = mayorEnLE.sig;
-    if (mayorEnLE.sig != null)
-      mayorEnLE.sig.ant = mayorEnLE.ant;
+    ListaEnlazada<Transaccion>.Nodo mayorEnLE = mayor.obtener();
+    mayor.eliminar(mayorEnLE);
     transaccionesHeap.sacarMaximo();
+    return mayorEnLE.valor;
   }
 }
