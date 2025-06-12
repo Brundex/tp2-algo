@@ -2,7 +2,7 @@ package aed.utils.estructuras;
 
 import java.util.ArrayList;
 
-public class MaxHeap<T extends Comparable<T>> {
+public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
     private ArrayList<Handle> listaHandles;
 
     private class Handle {
@@ -15,6 +15,7 @@ public class MaxHeap<T extends Comparable<T>> {
         }
     }
 
+    // Constructores
     public MaxHeap() {
         listaHandles = new ArrayList<Handle>();
     }
@@ -30,92 +31,30 @@ public class MaxHeap<T extends Comparable<T>> {
         }
 
         // Heapify desde la mitad hacia arriba
-        for (int i = elems.length / 2 - 1; i >= 0; i--) {
-            heapifyDown(listaHandles.get(i));
+        for (int i = (elems.length / 2) - 1; i >= 0; i--) {
+            heapifyDown(i);
         }
     }
 
-    // Para debugear
-    public String print() {
-        String sListaHandles = "";
-        for (int i = 0; i < listaHandles.size(); i++) {
-            sListaHandles += String.valueOf(listaHandles.get(i).valor) + ", ";
-        }
-        System.out.println("lista handlers: " + sListaHandles);
-        return "lista handlers: " + sListaHandles;
-    }
+    // Métodos de la interfaz
 
-    private Handle obtenerIzq(Handle elem) {
-        int indiceIzq = 2 * elem.indice + 1;
-        return indiceIzq < listaHandles.size() ? listaHandles.get(indiceIzq) : null;
-    }
-
-    private Handle obtenerDer(Handle elem) {
-        int indiceDer = 2 * elem.indice + 2;
-        return indiceDer < listaHandles.size() ? listaHandles.get(indiceDer) : null;
-    }
-
-    private void heapifyDown(Handle elem) {
-        Handle mayor = elem;
-        Handle izq = obtenerIzq(elem);
-        Handle der = obtenerDer(elem);
-
-        if (izq != null && izq.valor.compareTo(mayor.valor) > 0) {
-            mayor = izq;
-        }
-
-        if (der != null && der.valor.compareTo(mayor.valor) > 0) {
-            mayor = der;
-        }
-
-        if (mayor != elem) {
-            // Intercambiar valores
-            T temp = elem.valor;
-            elem.valor = mayor.valor;
-            mayor.valor = temp;
-
-            // Continuar heapify en el subárbol afectado
-            heapifyDown(mayor);
-        }
-    }
-
-    public T maximo() {
-        if (listaHandles.size() == 0)
+    // O(1)
+    public T maximo() { 
+        if (listaHandles.isEmpty())
             return null;
-        return listaHandles.get(0).valor;
+        return listaHandles.get(0).valor; // 
     }
 
-    public int longitud() {
-        return listaHandles.size();
-    }
-
+    // O(log n)
     public void agregar(T elem) {
         Handle nuevoHandle = new Handle(listaHandles.size(), elem);
         listaHandles.add(nuevoHandle);
 
-        heapifyUp(nuevoHandle);
+        int ultimoIndice = listaHandles.size() - 1;
+        heapifyUp(ultimoIndice);
     }
 
-    private void heapifyUp(Handle elem) {
-        int indice = elem.indice;
-        while (indice > 0) {
-            int padreIndice = (indice - 1) / 2;
-            Handle padre = listaHandles.get(padreIndice);
-
-            if (elem.valor.compareTo(padre.valor) <= 0) {
-                break;
-            }
-
-            // Intercambiar elementos
-            T temp = elem.valor;
-            elem.valor = padre.valor;
-            padre.valor = temp;
-
-            indice = padreIndice;
-            elem = padre;
-        }
-    }
-
+    // O(log n)
     public void sacarMaximo() {
         if (listaHandles.isEmpty()) {
             return;
@@ -123,23 +62,73 @@ public class MaxHeap<T extends Comparable<T>> {
 
         // Intercambiar el máximo con el último elemento
         Handle ultimo = listaHandles.get(listaHandles.size() - 1);
-        ultimo.indice = 0;
         listaHandles.set(0, ultimo);
+        listaHandles.remove(listaHandles.size() - 1); // Eliminar el último elemento tiene complejidad O(1)
 
-        // Eliminar el último elemento tiene complejidad O(1)
-        listaHandles.remove(listaHandles.size() - 1);
-
-        heapifyDown(ultimo);
+        heapifyDown(0);
     }
 
-    public void conjuntoACola(T[] conj) {
-        // Limpiar el heap actual
-        listaHandles.clear();
+    public int longitud() {
+        return listaHandles.size();
+    }
+    
+    // Métodos auxiliares
+    private void heapifyDown(int i) {
+        int indice = i;
+        int maxIndice = i;
+        int hijoIzq = obtenerIzq(i);
+        int hijoDer = obtenerDer(i);
 
-        // Construir nuevo heap con los elementos del conjunto
-        for (T elem : conj) {
-            agregar(elem);
+        // Chequea si alguno de los hijos es mayor
+        if (hijoIzq < listaHandles.size() && listaHandles.get(hijoIzq).valor.compareTo(listaHandles.get(maxIndice).valor) > 0) {
+                maxIndice = obtenerIzq(indice);
+            }
+
+        if (hijoDer < listaHandles.size() && listaHandles.get(hijoDer).valor.compareTo(listaHandles.get(maxIndice).valor) > 0) {
+                maxIndice = obtenerDer(indice);
+            }
+        
+        // Reemplaza por hijo mayor
+        if (maxIndice != indice) {
+            Handle temp = listaHandles.get(indice);
+            listaHandles.set(indice, listaHandles.get(maxIndice));
+            listaHandles.set(maxIndice, temp);
+
+            // Continua en el subárbol afectado
+            heapifyDown(maxIndice);
         }
+    }
+
+    private void heapifyUp(int i) {
+        int indice = i;
+        while (indice > 0) {
+            int padreIndice = obtenerPadre(indice);
+            Handle actual = listaHandles.get(indice);
+            Handle padre = listaHandles.get(padreIndice);
+
+            if (actual.valor.compareTo(padre.valor) <= 0) {
+                break;
+            }
+
+            // Intercambiar elementos
+            T temp = actual.valor;
+            actual.valor = padre.valor;
+            padre.valor = temp;
+
+            indice = padreIndice;
+        }
+    }
+
+    private int obtenerIzq(int i) {
+        return 2 * i + 1;
+    }
+
+    private int obtenerDer(int i) {
+        return 2 * i + 2;
+    }
+
+    private int obtenerPadre(int i) {
+        return (i - 1) / 2;
     }
 
     public void conjuntoACola(ArrayList<T> conj) {

@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 class MaxHeapTests {
   @Test
   public void obtMaxElemsDesordenados() {
-    MaxHeap<Integer> h = new MaxHeap<Integer>();
-    h.conjuntoACola(new Integer[] { 123, 1, 999, 888, 5, 2, 3 });
+    MaxHeap<Integer> h = new MaxHeap<Integer>(new Integer[] { 123, 1, 999, 888, 5, 2, 3 });
     assertEquals(999, h.maximo());
   }
 
@@ -25,8 +24,7 @@ class MaxHeapTests {
     Transaccion max = new Transaccion(3, 1, 3, 1);
     transacciones.add(max);
 
-    MaxHeap<Transaccion> h = new MaxHeap<Transaccion>();
-    h.conjuntoACola(transacciones.toArray(new Transaccion[0]));
+    MaxHeap<Transaccion> h = new MaxHeap<Transaccion>(transacciones.toArray(new Transaccion[0]));
 
     assertTrue(h.maximo().equals(max));
   }
@@ -40,8 +38,7 @@ class MaxHeapTests {
     Transaccion max = new Transaccion(3, 1, 3, 1);
     transacciones.add(max);
 
-    MaxHeap<Transaccion> h = new MaxHeap<Transaccion>();
-    h.conjuntoACola(transacciones.toArray(new Transaccion[0]));
+    MaxHeap<Transaccion> h = new MaxHeap<Transaccion>(transacciones.toArray(new Transaccion[0]));
 
     assertEquals(4, h.longitud());
 
@@ -65,14 +62,13 @@ class MaxHeapTests {
 
   @Test
   public void obtMaxHeapVacio() {
-    MaxHeap h = new MaxHeap();
+    MaxHeap<Transaccion> h = new MaxHeap<>();
     assertEquals(null, h.maximo());
   }
 
   @Test
   public void operarSobreListaOrdenada() {
-    MaxHeap<Integer> h = new MaxHeap<Integer>();
-    h.conjuntoACola(new Integer[] { 1, 2, 3 });
+    MaxHeap<Integer> h = new MaxHeap<Integer>(new Integer[] { 1, 2, 3 });
 
     assertEquals(3, h.maximo());
     assertEquals(3, h.longitud());
