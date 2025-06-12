@@ -130,4 +130,14 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
     private int obtenerPadre(int i) {
         return (i - 1) / 2;
     }
+
+    public void conjuntoACola(ArrayList<T> conj) {
+        // Limpiar el heap actual
+        listaHandles.clear();
+
+        // Construir nuevo heap con los elementos del conjunto
+        for (T elem : conj) {
+            agregar(elem);
+        }
+    }
 }
