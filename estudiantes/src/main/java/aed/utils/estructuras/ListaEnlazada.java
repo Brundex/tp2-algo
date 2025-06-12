@@ -5,16 +5,25 @@ import java.util.*;
 public class ListaEnlazada<T> implements Secuencia<T> {
     private Nodo primero;
     private Nodo ultimo;
+    private ArrayList<Handle> handles;
     private int longitud;
 
     private class Nodo {
-        T valor;
-        Nodo sig;
-        Nodo ant;
+        public T valor;
+        public Nodo sig;
+        public Nodo ant;
 
         Nodo(T v) {
             valor = v;
         }
+    }
+
+    private class Handle {
+        public Nodo nodo;
+    }
+
+    public ArrayList<Handle> handles() {
+        return handles;
     }
 
     public ListaEnlazada() {
