@@ -20,7 +20,7 @@ public class Bloque {
       sumaTransacciones += tx.monto();
     }
     cantidadTransacciones = transacciones.length;
-    transaccionesHeap.conjuntoACola(txArray);
+    transaccionesHeap = new MaxHeap<Transaccion>(txArray);
   }
 
   public Transaccion txMayorValor() {
