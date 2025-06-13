@@ -13,18 +13,28 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
             this.valor = valor;
             this.indice = indice;
         }
+
+        private T obtenerValor() {
+            return valor;
+        }
     }
 
     public class Handle {
         private Nodo nodo;
 
+        public Handle(Nodo n) {
+            nodo = n;
+        }
+
         public T obtener() {
-            return nodo.valor;
+            return nodo.obtenerValor();
         }
 
         public void subirPrioridad() {
             heapifyUp(nodo.indice);
+            
         }
+        
         public void bajarPrioridad() {
             heapifyDown(nodo.indice);
         }
@@ -34,7 +44,7 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
     public MaxHeap() {
         heap = new ArrayList<>();
     }
-    
+
     public MaxHeap(T[] elems) {
         heap = new ArrayList<>();
     
@@ -42,13 +52,11 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
         for (int i = 0; i < elems.length; i++) {
             Nodo nuevoNodo = new Nodo(elems[i], i);
             heap.add(nuevoNodo);
+            }
+            for (int i = (elems.length / 2) - 1; i >= 0; i--) {
+                heapifyDown(i);
+            }
         }
-    
-        // Heapify desde la mitad hacia arriba
-        for (int i = (elems.length / 2) - 1; i >= 0; i--) {
-            heapifyDown(i);
-        }
-    }
 
     public MaxHeap(ArrayList<T> elems) {
         heap = new ArrayList<>();
@@ -63,6 +71,25 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
         for (int i = (elems.size() / 2) - 1; i >= 0; i--) {
             heapifyDown(i);
         }
+    }
+
+    public ArrayList<Handle> constructorHandles(ArrayList<T> elems) {
+        heap = new ArrayList<>();
+        ArrayList<Handle> handles = new ArrayList<>();
+        // Primero agregamos todos los elementos
+        for (int i = 0; i < elems.size(); i++) {
+            Nodo nuevoNodo = new Nodo(elems.get(i), i);
+            heap.add(nuevoNodo);
+            Handle h = new Handle(nuevoNodo);
+            handles.add(h);
+        }
+    
+        // Heapify desde la mitad hacia arriba
+        for (int i = (elems.size() / 2) - 1; i >= 0; i--) {
+            heapifyDown(i);
+        }
+
+        return handles;
     }
 
     // O(1)
@@ -117,11 +144,8 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
         
         // Reemplaza por hijo mayor
         if (maxIndice != indice) {
-            Nodo temp = heap.get(indice);
-            heap.set(indice, heap.get(maxIndice));
-            heap.set(maxIndice, temp);
-            heap.get(indice).indice = maxIndice;
-            heap.get(maxIndice).indice = indice;
+            swap(indice, maxIndice);
+            
 
             // Continua en el subárbol afectado
             heapifyDown(maxIndice);
@@ -140,11 +164,7 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
             }
 
             // Intercambiar elementos
-            Nodo temp = heap.get(indice);
-            heap.set(indice, heap.get(padreIndice));
-            heap.set(padreIndice, temp);
-            heap.get(indice).indice = padreIndice;
-            heap.get(padreIndice).indice = indice;
+            swap(indice, padreIndice);
 
             indice = padreIndice;
         }
@@ -160,5 +180,15 @@ public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
 
     private int obtenerPadre(int i) {
         return (i - 1) / 2;
+    }
+
+    private void swap(int i, int j) {
+        Nodo temp = heap.get(i);
+    
+        heap.set(i, heap.get(j));
+        heap.set(j, temp);
+    
+        heap.get(i).indice = i;
+        heap.get(j).indice = j;
     }
 }

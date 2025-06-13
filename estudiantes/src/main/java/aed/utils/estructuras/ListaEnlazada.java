@@ -5,10 +5,10 @@ public class ListaEnlazada<T extends Comparable<T>> {
     private Nodo ultimo;
     private int longitud;
 
-    public class Nodo {
-        public T valor;
-        public Nodo sig;
-        public Nodo ant;
+    private class Nodo {
+        private T valor;
+        private Nodo sig;
+        private Nodo ant;
 
         Nodo(T v) {
             valor = v;
@@ -22,25 +22,22 @@ public class ListaEnlazada<T extends Comparable<T>> {
             nodo = nuevoNodo;
         }
 
-        public Nodo obtener() {
+        public Nodo obtenerNodo() {
             return nodo; 
         }
+        public T obtenerValorNodo() {
+            return nodo.valor;
+        }
 
-        // O(1) <- O(n)
-        // Lo cambié para eliminar según nodo i no por i-esimo Nodo.
-        // Si se guarda correctamente la txMayorMonto es O(1)
         public void eliminar(Nodo n) {
             if (n.ant == null && n.sig == null) {
                 primero = null;
                 ultimo = null;
             } else {
-                // Primer elemento pero no único
-                if (n == primero) {
+                if (n == primero) { // Primer elemento pero no único
                     primero = n.sig;
-                    primero.ant = null; // Al reves n.sig.ant == null; si no llega a andar
-                }
-                // Es el último elemento
-                else if (n == ultimo) {
+                    primero.ant = null;
+                } else if (n == ultimo) { // Es el último elemento
                     ultimo = n.ant;
                     ultimo.sig = null;
                 } else {
@@ -48,6 +45,7 @@ public class ListaEnlazada<T extends Comparable<T>> {
                     n.sig.ant = n.ant;
                 }
             }
+            longitud--;
         }
 
         @Override

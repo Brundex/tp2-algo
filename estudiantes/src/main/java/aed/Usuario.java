@@ -39,6 +39,10 @@ public class Usuario implements Comparable<Usuario> {
         return id;
     }
 
+    public void crearHandle(MaxHeap<Usuario>.Handle h) {
+        handle = h;
+    }
+
     public void sumarSaldo(int x) {
         monto += x;
         handle.subirPrioridad();

@@ -30,6 +30,7 @@ public class Bloque {
       ListaEnlazada<Transaccion>.Handle h = transaccionesLE.agregarAtras(tx);
       handles.add(h);
       sumaTransacciones += transacciones[i].monto();
+      cantidadTransacciones++;
     }
     
     transaccionesHeap = new MaxHeap<>(handles);
@@ -37,7 +38,7 @@ public class Bloque {
 
   public Transaccion txMayorValor() {
     ListaEnlazada<Transaccion>.Handle handleTransaccion = transaccionesHeap.maximo();
-    return handleTransaccion.obtener().valor;
+    return handleTransaccion.obtenerValorNodo();
   }
 
   public Transaccion[] transacciones() {
@@ -48,6 +49,7 @@ public class Bloque {
       listaTransacciones[i] = new Transaccion(iterador.siguiente());
       i++;
     }
+
     return listaTransacciones;
   }
 
@@ -59,9 +61,12 @@ public class Bloque {
   // O(log n)
   public Transaccion extraerMayorTransaccion() { //Que devuelva la transacción para revertir los saldos en Berretacoin
     ListaEnlazada<Transaccion>.Handle mayor = transaccionesHeap.maximo();
-    ListaEnlazada<Transaccion>.Nodo mayorEnLE = mayor.obtener();
-    mayor.eliminar(mayorEnLE);
+    mayor.eliminar(mayor.obtenerNodo());
     transaccionesHeap.sacarMaximo();
-    return mayorEnLE.valor;
+    if (mayor.obtenerValorNodo().id_comprador() != 0) {
+      cantidadTransacciones--;
+      sumaTransacciones -= mayor.obtenerValorNodo().monto();
+    }
+    return mayor.obtenerValorNodo();
   }
 }
