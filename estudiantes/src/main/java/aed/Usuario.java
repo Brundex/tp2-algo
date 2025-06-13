@@ -1,8 +1,12 @@
 package aed;
 
+import aed.utils.estructuras.MaxHeap;
+
 public class Usuario implements Comparable<Usuario> {
     private int id;
     private int monto;
+    private MaxHeap<Usuario>.Handle handle;
+
 
     public Usuario(int id, int monto) {
         this.id = id;
@@ -35,7 +39,13 @@ public class Usuario implements Comparable<Usuario> {
         return id;
     }
 
-    public void actualizarSaldo(int x) {
+    public void sumarSaldo(int x) {
         monto += x;
+        handle.subirPrioridad();
+    }
+
+    public void restarSaldo(int x) {
+        monto -= x;
+        handle.bajarPrioridad();
     }
 }
