@@ -9,13 +9,19 @@ import aed.utils.estructuras.MaxHeap;
 public class Bloque {
   private ListaEnlazada<Transaccion> transaccionesLE;
   private MaxHeap<ListaEnlazada<Transaccion>.Handle> transaccionesHeap;
-  private int cantidadTransacciones = 0;
-  private int sumaTransacciones = 0;
+  private int cantidadTransacciones;
+  private int sumaTransacciones;
 
   public Bloque(Transaccion[] transacciones) {
     // Implementar
-    transaccionesLE = new ListaEnlazada<>(); // Faltaba inicializar LE
-    cantidadTransacciones = transacciones.length - 1; // -1 porque no considera la transacción de creación. 
+    cantidadTransacciones = 0;
+    sumaTransacciones = 0;
+
+    transaccionesLE = new ListaEnlazada<>();
+    if (transacciones.length > 0 && transacciones[0].id_comprador() == 0) {
+      sumaTransacciones -= transacciones[0].monto();
+      cantidadTransacciones--;
+    }
 
     ArrayList<ListaEnlazada<Transaccion>.Handle> handles = new ArrayList<>();
 
@@ -23,9 +29,7 @@ public class Bloque {
       Transaccion tx = new Transaccion(transacciones[i]);
       ListaEnlazada<Transaccion>.Handle h = transaccionesLE.agregarAtras(tx);
       handles.add(h);
-      if (transacciones[i].id_comprador() != 0) {
-        sumaTransacciones += tx.monto();
-      }
+      sumaTransacciones += transacciones[i].monto();
     }
     
     transaccionesHeap = new MaxHeap<>(handles);
@@ -48,7 +52,7 @@ public class Bloque {
   }
 
   public int montoMedio() {
-    if (cantidadTransacciones <= 1) return 0;
+    if (cantidadTransacciones == 0) return 0;
     return sumaTransacciones / cantidadTransacciones;
   }
 
