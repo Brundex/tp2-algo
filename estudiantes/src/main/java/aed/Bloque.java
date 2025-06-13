@@ -1,32 +1,44 @@
 package aed;
 
+import java.util.ArrayList;
+
 import aed.utils.estructuras.Iterador;
 import aed.utils.estructuras.ListaEnlazada;
 import aed.utils.estructuras.MaxHeap;
-import aed.utils.estructuras.ListaEnlazada.Nodo;
 
 public class Bloque {
   private ListaEnlazada<Transaccion> transaccionesLE;
   private MaxHeap<ListaEnlazada<Transaccion>.Handle> transaccionesHeap;
-  private int cantidadTransacciones = 0;
-  private int sumaTransacciones = 0;
+  private int cantidadTransacciones;
+  private int sumaTransacciones;
 
   public Bloque(Transaccion[] transacciones) {
     // Implementar
-    Transaccion[] txArray = new Transaccion[transacciones.length];
+    cantidadTransacciones = 0;
+    sumaTransacciones = 0;
+
+    transaccionesLE = new ListaEnlazada<>();
+    if (transacciones.length > 0 && transacciones[0].id_comprador() == 0) {
+      sumaTransacciones -= transacciones[0].monto();
+      cantidadTransacciones--;
+    }
+
+    ArrayList<ListaEnlazada<Transaccion>.Handle> handles = new ArrayList<>();
+
     for (int i = 0; i < transacciones.length; i++) {
       Transaccion tx = new Transaccion(transacciones[i]);
-      transaccionesLE.agregarAtras(tx);
-      txArray[i] = tx;
-      sumaTransacciones += tx.monto();
+      ListaEnlazada<Transaccion>.Handle h = transaccionesLE.agregarAtras(tx);
+      handles.add(h);
+      sumaTransacciones += transacciones[i].monto();
+      cantidadTransacciones++;
     }
-    cantidadTransacciones = transacciones.length;
-    transaccionesHeap = new MaxHeap<ListaEnlazada<Transaccion>.Handle>(transaccionesLE.obtenerHandles());
+    
+    transaccionesHeap = new MaxHeap<>(handles);
   }
 
   public Transaccion txMayorValor() {
     ListaEnlazada<Transaccion>.Handle handleTransaccion = transaccionesHeap.maximo();
-    return handleTransaccion.nodo.valor;
+    return handleTransaccion.obtenerValorNodo();
   }
 
   public Transaccion[] transacciones() {
@@ -37,21 +49,24 @@ public class Bloque {
       listaTransacciones[i] = new Transaccion(iterador.siguiente());
       i++;
     }
+
     return listaTransacciones;
   }
 
   public int montoMedio() {
+    if (cantidadTransacciones == 0) return 0;
     return sumaTransacciones / cantidadTransacciones;
   }
 
   // O(log n)
-  public void extraerMayorTransaccion() {
+  public Transaccion extraerMayorTransaccion() { //Que devuelva la transacción para revertir los saldos en Berretacoin
     ListaEnlazada<Transaccion>.Handle mayor = transaccionesHeap.maximo();
-    Nodo mayorEnLE = mayor.nodo;
-    if (mayorEnLE.ant != null)
-      mayorEnLE.ant.sig = mayorEnLE.sig;
-    if (mayorEnLE.sig != null)
-      mayorEnLE.sig.ant = mayorEnLE.ant;
+    mayor.eliminar(mayor.obtenerNodo());
     transaccionesHeap.sacarMaximo();
+    if (mayor.obtenerValorNodo().id_comprador() != 0) {
+      cantidadTransacciones--;
+      sumaTransacciones -= mayor.obtenerValorNodo().monto();
+    }
+    return mayor.obtenerValorNodo();
   }
 }

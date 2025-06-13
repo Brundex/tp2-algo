@@ -1,17 +1,14 @@
 package aed.utils.estructuras;
 
-import java.util.*;
-
-public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
+public class ListaEnlazada<T extends Comparable<T>> {
     private Nodo primero;
     private Nodo ultimo;
-    private ArrayList<Handle> handles;
     private int longitud;
 
-    public class Nodo {
-        public T valor;
-        public Nodo sig;
-        public Nodo ant;
+    private class Nodo {
+        private T valor;
+        private Nodo sig;
+        private Nodo ant;
 
         Nodo(T v) {
             valor = v;
@@ -19,7 +16,37 @@ public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
     }
 
     public class Handle implements Comparable<Handle> {
-        public Nodo nodo;
+        private Nodo nodo;
+
+        public Handle(Nodo nuevoNodo) {
+            nodo = nuevoNodo;
+        }
+
+        public Nodo obtenerNodo() {
+            return nodo; 
+        }
+        public T obtenerValorNodo() {
+            return nodo.valor;
+        }
+
+        public void eliminar(Nodo n) {
+            if (n.ant == null && n.sig == null) {
+                primero = null;
+                ultimo = null;
+            } else {
+                if (n == primero) { // Primer elemento pero no único
+                    primero = n.sig;
+                    primero.ant = null;
+                } else if (n == ultimo) { // Es el último elemento
+                    ultimo = n.ant;
+                    ultimo.sig = null;
+                } else {
+                    n.ant.sig = n.sig;
+                    n.sig.ant = n.ant;
+                }
+            }
+            longitud--;
+        }
 
         @Override
         public int compareTo(Handle otro) {
@@ -45,18 +72,12 @@ public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
         longitud = lista.longitud();
     }
 
-    public ArrayList<Handle> handles() {
-        return handles;
-    }
-
     // O(1)
-    @Override
     public int longitud() {
         return longitud;
     }
 
     // O(1)
-    @Override
     public void agregarAdelante(T elem) {
         Nodo nuevo = new Nodo(elem);
         if (primero == null) {
@@ -71,8 +92,7 @@ public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
     }
 
     // O(1)
-    @Override
-    public void agregarAtras(T elem) {
+    public Handle agregarAtras(T elem) {
         Nodo nuevo = new Nodo(elem);
         if (primero == null) {
             primero = nuevo;
@@ -84,10 +104,10 @@ public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
             ultimo = nuevo;
         }
         longitud++;
+        return new Handle(nuevo);
     }
 
     // O(n)
-    @Override
     public T obtener(int i) {
         Nodo actual = primero;
         if (i == 0) {
@@ -100,7 +120,6 @@ public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
     }
 
     // O(n)
-    @Override
     public void eliminar(int i) {
         Nodo actual = primero;
         if (longitud() == 1) {
@@ -131,7 +150,6 @@ public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
     }
 
     // O(n)
-    @Override
     public void modificarPosicion(int indice, T elem) {
         Nodo actual = primero;
         for (int i = 0; i < indice; i++) {
@@ -156,11 +174,6 @@ public class ListaEnlazada<T extends Comparable<T>> implements Secuencia<T> {
         }
         texto = texto.concat("]");
         return texto;
-    }
-
-    // O(1)
-    public ArrayList<Handle> obtenerHandles() {
-        return handles;
     }
 
     private class ListaIterador implements Iterador<T> {
