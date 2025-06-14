@@ -1,5 +1,7 @@
 package aed.utils.estructuras;
 
+import aed.utils.estructuras.interfaces.Iterador;
+
 public class ListaEnlazada<T extends Comparable<T>> {
     private Nodo primero;
     private Nodo ultimo;

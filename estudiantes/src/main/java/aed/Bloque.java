@@ -2,9 +2,9 @@ package aed;
 
 import java.util.ArrayList;
 
-import aed.utils.estructuras.Iterador;
 import aed.utils.estructuras.ListaEnlazada;
 import aed.utils.estructuras.MaxHeap;
+import aed.utils.estructuras.interfaces.Iterador;
 
 public class Bloque {
   private ListaEnlazada<Transaccion> transaccionesLE;

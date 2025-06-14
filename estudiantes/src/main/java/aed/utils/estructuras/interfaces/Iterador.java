@@ -1,4 +1,4 @@
-package aed.utils.estructuras;
+package aed.utils.estructuras.interfaces;
 
 public interface Iterador<T> {
 

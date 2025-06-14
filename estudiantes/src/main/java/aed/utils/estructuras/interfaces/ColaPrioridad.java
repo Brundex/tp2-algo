@@ -1,4 +1,4 @@
-package aed.utils.estructuras;
+package aed.utils.estructuras.interfaces;
 
 public interface ColaPrioridad<T> {
     public T maximo();

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import aed.utils.estructuras.*;
+import aed.utils.estructuras.interfaces.Iterador;
 
 class ListaEnlazadaTests {
 
