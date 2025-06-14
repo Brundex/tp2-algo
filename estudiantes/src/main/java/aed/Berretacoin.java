@@ -1,12 +1,9 @@
 /* TODO:
- * Asegurarse de que sea correcto el indice de usuarios.
+ * Asegurarse de que TODAS las complejidades estén justificadas (en las demás clases también)
  * Limpiar comentarios
  * Dejar código limpio y asegurarse que los nombres sean consistentes
- * Justificar complejidades
- * Escribir más tests si hace falta. Los de ListaEnlazada los dejamos así? Casi que ni usamos algunas cosas.
- * Limpiar ListaEnlazada (tiene cosas que no hacen falta)
- * Corroborar que se sigan los principios de abstraccion y encapsulamiento.
- * Hay que validar los saldos en las transacciones del bloque? Si es así agregar un test 
+ * Escribir tests máx exhaustivos (MaxHeap, ListaEnlazada y sacar los que no hagan falta, Bloque capaz, testear Handles)
+ * Limpiar métodos de LE que no se usen
  */
 package aed;
 
