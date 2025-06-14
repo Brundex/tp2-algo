@@ -6,6 +6,7 @@ public class Transaccion implements Comparable<Transaccion> {
     private int idVendedor;
     private int monto;
 
+    // O(1)
     public Transaccion(int id, int idComprador, int idVendedor, int monto) {
         this.id = id;
         this.idComprador = idComprador;
@@ -13,6 +14,7 @@ public class Transaccion implements Comparable<Transaccion> {
         this.monto = monto;
     }
 
+    // O(1)
     public Transaccion(Transaccion tx) {
         this.id = tx.id;
         this.idComprador = tx.idComprador;
@@ -20,6 +22,7 @@ public class Transaccion implements Comparable<Transaccion> {
         this.monto = tx.monto;
     }
 
+    // O(1)
     @Override
     public int compareTo(Transaccion otro) {
         if (this.monto != otro.monto) {
@@ -29,6 +32,7 @@ public class Transaccion implements Comparable<Transaccion> {
         }
     }
 
+    // O(1)
     @Override
     public boolean equals(Object otro) {
         if (this == otro)
@@ -42,18 +46,22 @@ public class Transaccion implements Comparable<Transaccion> {
                 this.monto == otraTx.monto;
     }
 
+    // O(1)
     public int monto() {
         return monto;
     }
 
+    // O(1)
     public int id_comprador() {
         return idComprador;
     }
 
+    // O(1)
     public int id_vendedor() {
         return idVendedor;
     }
 
+    // O(1)
     public int id() {
         return id;
     }
