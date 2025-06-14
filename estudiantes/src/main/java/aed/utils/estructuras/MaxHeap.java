@@ -2,6 +2,8 @@ package aed.utils.estructuras;
 
 import java.util.ArrayList;
 
+import aed.utils.estructuras.interfaces.ColaPrioridad;
+
 public class MaxHeap<T extends Comparable<T>> implements ColaPrioridad<T> {
     private ArrayList<Nodo> heap;
 

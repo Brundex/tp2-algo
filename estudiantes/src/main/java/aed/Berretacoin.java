@@ -1,12 +1,9 @@
 /* TODO:
- * Asegurarse de que sea correcto el indice de usuarios. No encontré otra forma de hacerlo
+ * Asegurarse de que TODAS las complejidades estén justificadas (en las demás clases también)
  * Limpiar comentarios
  * Dejar código limpio y asegurarse que los nombres sean consistentes
- * Justificar complejidades
- * Escribir más tests si hace falta. Los de ListaEnlazada los dejamos así? Casi que ni usamos algunas cosas.
- * Limpiar ListaEnlazada (tiene cosas que no hacen falta)
- * Corroborar que se sigan los principios de abstraccion y encapsulamiento. ListaEnlazada quedó rara
- * Hay que validar los saldos en las transacciones del bloque? Si es así agregar un test 
+ * Escribir tests máx exhaustivos (MaxHeap, ListaEnlazada y sacar los que no hagan falta, Bloque capaz, testear Handles)
+ * Limpiar métodos de LE que no se usen
  */
 package aed;
 
@@ -16,19 +13,21 @@ import aed.utils.estructuras.MaxHeap;
 
 public class Berretacoin {
     private ArrayList<Bloque> bloques;
-    private MaxHeap<Usuario> usuariosHeap;
-    private ArrayList<Usuario> indiceUsuarios;
+    private MaxHeap<GestionUsuario.Usuario> usuariosHeap;
+    private ArrayList<GestionUsuario> indiceUsuarios;
 
     // O(P)
     public Berretacoin(int n_usuarios){
         bloques = new ArrayList<>();
         indiceUsuarios = new ArrayList<>();
-        usuariosHeap = new MaxHeap<>(indiceUsuarios);
+        usuariosHeap = new MaxHeap<>();
+        ArrayList<GestionUsuario.Usuario> listaUsuarios = new ArrayList<>();
         for (int i = 0; i < n_usuarios; i++) {
-            indiceUsuarios.add(new Usuario(i + 1, 0)); //indiceUsuarios[0] = (1, 0) indiceUsuarios[1] = (2, 0) indiceUsuarios[2] = (3, 0) 
+            indiceUsuarios.add(new GestionUsuario(i + 1, 0));
+            listaUsuarios.add(indiceUsuarios.get(i).usuario()); //indiceUsuarios[0] = (1, 0) indiceUsuarios[1] = (2, 0) indiceUsuarios[2] = (3, 0) 
         }
+        ArrayList<MaxHeap<GestionUsuario.Usuario>.Handle> handles = usuariosHeap.constructorHandles(listaUsuarios);
 
-        ArrayList<MaxHeap<Usuario>.Handle> handles = usuariosHeap.constructorHandles(indiceUsuarios);
         for (int i = 0; i < indiceUsuarios.size(); i++) {
             indiceUsuarios.get(i).crearHandle(handles.get(i));
         }
