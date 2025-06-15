@@ -1,13 +1,3 @@
-/* TODO:
- * Asegurarse de que sea correcto el indice de usuarios. No encontré otra forma de hacerlo
- * Limpiar comentarios
- * Dejar código limpio y asegurarse que los nombres sean consistentes
- * Justificar complejidades
- * Escribir más tests si hace falta. Los de ListaEnlazada los dejamos así? Casi que ni usamos algunas cosas.
- * Limpiar ListaEnlazada (tiene cosas que no hacen falta)
- * Corroborar que se sigan los principios de abstraccion y encapsulamiento. ListaEnlazada quedó rara
- * Hay que validar los saldos en las transacciones del bloque? Si es así agregar un test 
- */
 package aed;
 
 import java.util.ArrayList;
@@ -24,7 +14,7 @@ public class Berretacoin {
         indiceUsuarios = new ArrayList<>();
         usuariosHeap = new MaxHeap<>(indiceUsuarios);
         for (int i = 0; i < n_usuarios; i++) {
-            indiceUsuarios.add(new Usuario(i + 1, 0)); //indiceUsuarios[0] = (1, 0) indiceUsuarios[1] = (2, 0) indiceUsuarios[2] = (3, 0) 
+            indiceUsuarios.add(new Usuario(i + 1, 0)); //indiceUsuarios[0] = (1, 0) indiceUsuarios[1] = (2, 0) indiceUsuarios[2] = (3, 0)
         }
 
         ArrayList<MaxHeap<Usuario>.Handle> handles = usuariosHeap.constructorHandles(indiceUsuarios);
@@ -47,7 +37,7 @@ public class Berretacoin {
             }
             else {
                 indiceUsuarios.get(indiceVendedor).sumarSaldo(monto);
-                indiceUsuarios.get(indiceComprador).restarSaldo(monto);       
+                indiceUsuarios.get(indiceComprador).restarSaldo(monto);
             }
         }
     }
