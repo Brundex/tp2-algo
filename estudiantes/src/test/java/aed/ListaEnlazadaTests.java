@@ -3,11 +3,12 @@ package aed;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 
-import aed.utils.estructuras.*;
+import aed.utils.estructuras.Iterador;
+import aed.utils.estructuras.ListaEnlazada;
 
+// se testean metodos que no se emplean en la solucion de "Berretacoin", como el metodo eliminar() pero se debe testear igualmente pues es funcionalidad de la estructura "ListaEnlazada" y si se llegara a precisar en algun futuro ya deberia estar testeada.
 class ListaEnlazadaTests {
 
     @Test
